@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExportaLink | Comercio Exterior B2B</title>
+    <!-- Google Fonts: Plus Jakarta Sans para un look de startup moderna -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons para iconos modernos y ligeros -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        /* ================= VARIABLES DE IDENTIDAD VISUAL ================= */
+        :root {
+            --grafito: #151A21;
+            --marfil: #F5F3EE;
+            --petroleo: #0F766E;
+            --petroleo-hover: #0c5e58;
+            --lima: #B7D94C;
+            --gris: #69727D;
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ================= RESET Y BASE ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--marfil);
+            color: var(--grafito);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ================= COMPONENTES GENERALES ================= */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--petroleo);
+            color: var(--marfil);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--petroleo-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-whatsapp {
+            background-color: transparent;
+            color: var(--marfil);
+            border: 2px solid var(--lima);
+        }
+
+        .btn-whatsapp:hover {
+            background-color: var(--lima);
+            color: var(--grafito);
+        }
+        
+        .btn-whatsapp.dark-mode {
+            color: var(--grafito);
+            border-color: var(--petroleo);
+        }
+        
+        .btn-whatsapp.dark-mode:hover {
+            background-color: var(--petroleo);
+            color: var(--marfil);
+        }
+
+        /* Indicador 24/7 con Verde Lima */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--marfil);
+            backdrop-filter: blur(4px);
+        }
+        
+        .status-badge.light {
+            background: rgba(15, 118, 110, 0.05);
+            border: 1px solid rgba(15, 118, 110, 0.15);
+            color: var(--petroleo);
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--lima);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--lima);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(183, 217, 76, 0.7); }
+            70% { box-shadow: 0 0 0 8px rgba(183, 217, 76, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(183, 217, 76, 0); }
+        }
+
+        /* ================= NAVEGACIÓN ================= */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(21, 26, 33, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Logo personalizado: E + L conectadas */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--marfil);
+            letter-spacing: -0.5px;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--marfil);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--lima);
+        }
+
+        .menu-toggle {
+            display: none;
+            color: var(--marfil);
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        /* ================= HERO PRINCIPAL ================= */
+        .hero {
+            position: relative;
+            background-color: var(--grafito);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(to right, rgba(21, 26, 33, 0.96) 0%, rgba(21, 26, 33, 0.75) 100%), url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 680px;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            color: var(--marfil);
+            line-height: 1.15;
+            margin: 20px 0;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #A0A5AA;
+            margin-bottom: 35px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* ================= SECCIONES COMUNES ================= */
+        section {
+            padding: 90px 0;
+        }
+
+        .section-title {
+            font-size: 2.3rem;
+            color: var(--grafito);
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-subtitle {
+            color: var(--gris);
+            font-size: 1.05rem;
+            max-width: 650px;
+            margin-bottom: 50px;
+        }
+
+        /* ================= ¿QUÉ ES EXPORTALINK? ================= */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-text p {
+            color: var(--gris);
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+        }
+
+        .about-visual {
+            background: #FFFFFF;
+            border: 1px solid rgba(0,0,0,0.06);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.03);
+            position: relative;
+        }
+
+        .about-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .about-feature-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .about-feature-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(15, 118, 110, 0.1);
+            color: var(--petroleo);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        /* ================= PROPUESTA DE VALOR (Más que una tienda) ================= */
+        .differentiator-box {
+            background-color: var(--petroleo);
+            color: var(--marfil);
+            border-radius: 24px;
+            padding: 55px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .differentiator-box h2 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: var(--marfil);
+            position: relative;
+            z-index: 2;
+        }
+
+        .differentiator-box p {
+            font-size: 1.05rem;
+            max-width: 800px;
+            margin: 0 auto 35px auto;
+            color: rgba(255,255,255,0.9);
+            position: relative;
+            z-index: 2;
+        }
+
+        .flow-pills {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .flow-pill {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* ================= SERVICIOS ================= */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .service-card {
+            background: #FFFFFF;
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: var(--border-radius);
+            padding: 35px 30px;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.02);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--petroleo);
+            box-shadow: 0 15px 30px rgba(15, 118, 110, 0.08);
+        }
+
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(15, 118, 110, 0.08);
+            color: var(--petroleo);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            color: var(--grafito);
+        }
+
+        .service-card p {
+            color: var(--gris);
+            font-size: 0.92rem;
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+
+        .service-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--petroleo);
+            font-weight: 600;
+            font-size: 0.9rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: var(--transition);
+        }
+
+        .service-action:hover {
+            color: var(--grafito);
+        }
+
+        /* ================= ¿CÓMO FUNCIONA? ================= */
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .process-card {
+            background: #FFFFFF;
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .process-number {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: rgba(15, 118, 110, 0.15);
+        }
+
+        .process-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--grafito);
+        }
+
+        .process-card p {
+            color: var(--gris);
+            font-size: 0.9rem;
+        }
+
+        /* ================= BENEFICIOS ================= */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .benefit-column {
+            background: #FFFFFF;
+            border-radius: var(--border-radius);
+            padding: 40px;
+            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.02);
+        }
+
+        .benefit-column h3 {
+            font-size: 1.4rem;
+            color: var(--petroleo);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .benefit-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+            color: var(--gris);
+            font-size: 0.95rem;
+        }
+
+        .benefit-list li i {
+            color: var(--petroleo);
+            font-size: 1.1rem;
+            margin-top: 3px;
+        }
+
+        /* ================= SECCIÓN DIFERENCIADOR ESPECIAL ================= */
+        .diff-section {
+            background-color: var(--grafito);
+            color: var(--marfil);
+            padding: 90px 0;
+            text-align: center;
+        }
+
+        .diff-section .section-title {
+            color: var(--marfil);
+        }
+
+        .diff-section .section-subtitle {
+            color: #A0A5AA;
+            margin: 0 auto 50px auto;
+        }
+
+        .diff-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            text-align: left;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .diff-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 30px;
+            border-radius: var(--border-radius);
+        }
+
+        .diff-item h4 {
+            color: var(--lima);
+            font-size: 1.15rem;
+            margin-bottom: 10px;
+        }
+
+        .diff-item p {
+            color: #A0A5AA;
+            font-size: 0.92rem;
+        }
+
+        /* ================= CONTACTO ================= */
+        .contact-section {
+            background-color: #FFFFFF;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.88rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 8px;
+            font-family: inherit;
+            background: var(--marfil);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--petroleo);
+            background: #FFFFFF;
+        }
+
+        /* ================= FOOTER ================= */
+        footer {
+            background-color: var(--grafito);
+            color: #A0A5AA;
+            padding: 70px 0 30px 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            color: var(--marfil);
+            font-size: 1.4rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .footer-links h4 {
+            color: var(--marfil);
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--lima);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.82rem;
+        }
+
+        /* ================= MODAL INFORMATIVO ================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(21, 26, 33, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: #FFFFFF;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 16px;
+            padding: 35px;
+            position: relative;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gris);
+        }
+
+        /* ================= ANIMACIONES DE APARICIÓN ================= */
+        .reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: all 0.7s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ================= RESPONSIVE ================= */
+        @media (max-width: 992px) {
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .process-grid { grid-template-columns: repeat(2, 1fr); }
+            .about-grid, .contact-grid, .benefits-grid, .diff-cards { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.6rem; }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            .nav-links {
+                position: absolute;
+                top: 100%; left: 0; width: 100%;
+                background-color: var(--grafito);
+                flex-direction: column;
+                padding: 25px 0;
+                gap: 20px;
+                border-top: 1px solid rgba(255,255,255,0.05);
+                transform: translateY(-150%);
+                opacity: 0;
+                transition: var(--transition);
+                z-index: -1;
+            }
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            .services-grid, .process-grid { grid-template-columns: 1fr; }
+            .hero { text-align: center; padding-top: 100px; }
+            .hero-content { margin: 0 auto; }
+            .hero-buttons { justify-content: center; }
+            section { padding: 70px 0; }
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER Y NAVEGACIÓN -->
+    <header>
+        <div class="container nav-container">
+            <!-- Logo ExportaLink: E + L con conectividad -->
+            <a href="#" class="logo">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="22" cy="50" r="7" fill="#B7D94C"/>
+                    <circle cx="78" cy="25" r="7" fill="#0F766E"/>
+                    <circle cx="78" cy="75" r="7" fill="#0F766E"/>
+                    <path d="M22 50 L22 25 L55 25" stroke="#F5F3EE" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M22 50 L48 50" stroke="#F5F3EE" stroke-width="8" stroke-linecap="round"/>
+                    <path d="M22 50 L22 75 L78 75" stroke="#F5F3EE" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M55 25 L78 25" stroke="#B7D94C" stroke-width="3" stroke-dasharray="3 3"/>
+                    <path d="M48 50 L72 50" stroke="#B7D94C" stroke-width="3" stroke-dasharray="3 3"/>
+                </svg>
+                ExportaLink
+            </a>
+
+            <nav class="nav-links" id="nav-links">
+                <a href="#about">¿Qué es?</a>
+                <a href="#servicios">Servicios</a>
+                <a href="#como-funciona">Cómo funciona</a>
+                <a href="#beneficios">Beneficios</a>
+                <a href="#contacto" class="btn btn-primary" style="padding: 8px 18px;">Contacto</a>
+            </nav>
+
+            <i class="ph ph-list menu-toggle" id="menu-toggle"></i>
+        </div>
+    </header>
+
+    <!-- HERO PRINCIPAL -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="container hero-content reveal">
+            <div class="status-badge">
+                <span class="dot"></span> Disponible 24/7
+            </div>
+            <h1>Conectamos productos ecuatorianos con mercados internacionales.</h1>
+            <p>Conectamos empresas ecuatorianas con compradores internacionales y facilitamos la coordinación de sus operaciones de comercio exterior.</p>
+            <div class="hero-buttons">
+                <a href="#servicios" class="btn btn-primary">
+                    Conoce nuestros servicios
+                </a>
+                <a href="https://wa.me/593981313672" target="_blank" class="btn btn-whatsapp">
+                    <i class="ph ph-whatsapp-logo" style="font-size: 1.2rem;"></i> Contáctanos por WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ¿QUÉ ES EXPORTALINK? -->
+    <section id="about" class="container reveal">
+        <div class="about-grid">
+            <div class="about-text">
+                <h2 class="section-title">¿Qué es ExportaLink?</h2>
+                <p>ExportaLink es una plataforma digital B2B especializada en comercio exterior que conecta MIPYMES y pequeños productores ecuatorianos con compradores internacionales.</p>
+                <p>Facilitamos de forma integrada la búsqueda de proveedores, cotizaciones, negociación y la debida coordinación de operaciones internacionales en un entorno virtual único.</p>
+            </div>
+            <div class="about-visual">
+                <div class="about-feature-item">
+                    <div class="about-feature-icon"><i class="ph ph-globe-hemisphere-west"></i></div>
+                    <div>
+                        <h4 style="font-size: 1rem; margin-bottom: 2px;">Alcance Global</h4>
+                        <p style="font-size: 0.88rem; color: var(--gris);">Enlace directo entre la oferta ecuatoriana y compradores del mundo.</p>
+                    </div>
+                </div>
+                <div class="about-feature-item">
+                    <div class="about-feature-icon"><i class="ph ph-cpu"></i></div>
+                    <div>
+                        <h4 style="font-size: 1rem; margin-bottom: 2px;">Entorno Tecnológico</h4>
+                        <p style="font-size: 0.88rem; color: var(--gris);">Digitalización y orden de los procesos de comercio exterior.</p>
+                    </div>
+                </div>
+                <div class="about-feature-item">
+                    <div class="about-feature-icon"><i class="ph ph-shield-check"></i></div>
+                    <div>
+                        <h4 style="font-size: 1rem; margin-bottom: 2px;">Coordinación Especializada</h4>
+                        <p style="font-size: 0.88rem; color: var(--gris);">Articulación con operadores logísticos y aduaneros profesionales.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROPUESTA DE VALOR (Más que una tienda virtual) -->
+    <section class="container">
+        <div class="differentiator-box reveal">
+            <h2>Más que una tienda virtual</h2>
+            <p>Una plataforma especializada para conectar y coordinar una operación comercial internacional integral.</p>
+            <div class="flow-pills">
+                <span class="flow-pill">Proveedor</span>
+                <span class="flow-pill">→</span>
+                <span class="flow-pill">Producto</span>
+                <span class="flow-pill">→</span>
+                <span class="flow-pill">Comprador</span>
+                <span class="flow-pill">→</span>
+                <span class="flow-pill">Cotización</span>
+                <span class="flow-pill">→</span>
+                <span class="flow-pill">Negociación</span>
+                <span class="flow-pill">→</span>
+                <span class="flow-pill">Comercio Exterior</span>
+                <span class="flow-pill">→</span>
+                <span class="flow-pill">Logística</span>
+                <span class="flow-pill">→</span>
+                <span class="flow-pill">Seguimiento</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN DE SERVICIOS -->
+    <section id="servicios" class="container reveal">
+        <h2 class="section-title">Nuestros servicios</h2>
+        <p class="section-subtitle">Soluciones estructuradas para potenciar cada fase de la comercialización internacional.</p>
+
+        <div class="services-grid">
+            <!-- 1 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="ph ph-storefront"></i></div>
+                <h3>Catálogo digital de productos exportables</h3>
+                <p>Permite a las MIPYMES y pequeños productores ecuatorianos presentar sus productos mediante fichas digitales con descripción, características, presentación, cantidades disponibles, capacidad, certificaciones, origen y fotografías.</p>
+                <button class="service-action" onclick="openModal('Catálogo digital de productos exportables', 'Facilita la exhibición organizada y profesional de la oferta exportable ecuatoriana hacia los mercados globales.')">Consultar servicio <i class="ph ph-arrow-right"></i></button>
+            </div>
+            <!-- 2 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="ph ph-magnifying-glass"></i></div>
+                <h3>Búsqueda de proveedores ecuatorianos</h3>
+                <p>Permite a compradores internacionales buscar productos y proveedores ecuatorianos según categorías, características, cantidades requeridas o mercado de interés.</p>
+                <button class="service-action" onclick="openModal('Búsqueda de proveedores ecuatorianos', 'Optimiza el descubrimiento de fabricantes y productores locales verificados para demandas internacionales.')">Consultar servicio <i class="ph ph-arrow-right"></i></button>
+            </div>
+            <!-- 3 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="ph ph-calculator"></i></div>
+                <h3>Solicitud y gestión de cotizaciones</h3>
+                <p>Los compradores pueden seleccionar un producto y solicitar una cotización. Los proveedores responden con precio, cantidad, términos comerciales y datos para la negociación.</p>
+                <button class="service-action" onclick="openModal('Solicitud y gestión de cotizaciones', 'Agiliza el intercambio de propuestas comerciales estructuradas entre empresas interesadas.')">Consultar servicio <i class="ph ph-arrow-right"></i></button>
+            </div>
+            <!-- 4 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="ph ph-chats-circle"></i></div>
+                <h3>Comunicación y negociación B2B</h3>
+                <p>Permite que compradores y vendedores se comuniquen directamente para establecer las condiciones de una operación comercial internacional.</p>
+                <button class="service-action" onclick="openModal('Comunicación y negociación B2B', 'Canales directos orientados a concretar acuerdos comerciales transparentes y seguros.')">Consultar servicio <i class="ph ph-arrow-right"></i></button>
+            </div>
+            <!-- 5 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="ph ph-file-text"></i></div>
+                <h3>Apoyo en operaciones de comercio exterior</h3>
+                <p>Después de confirmar una operación, ExportaLink proporciona orientación sobre los pasos y documentos que deben considerarse según la transacción.</p>
+                <button class="service-action" onclick="openModal('Apoyo en operaciones de comercio exterior', 'Orientación documental y procesal clave para cumplir con las normativas internacionales.')">Consultar servicio <i class="ph ph-arrow-right"></i></button>
+            </div>
+            <!-- 6 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="ph ph-handshake"></i></div>
+                <h3>Conexión con proveedores especializados</h3>
+                <p>Conecta a los usuarios con operadores logísticos, agentes aduaneros y servicios relacionados. ExportaLink coordina estos servicios sin reemplazar a los profesionales.</p>
+                <button class="service-action" onclick="openModal('Conexión con proveedores especializados', 'Enlace directo con aliados logísticos y aduaneros certificados para la ejecución física.')">Consultar servicio <i class="ph ph-arrow-right"></i></button>
+            </div>
+            <!-- 7 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="ph ph-map-pin-line"></i></div>
+                <h3>Seguimiento de la operación</h3>
+                <p>Permite que compradores y vendedores puedan consultar el estado del pedido y del transporte mediante herramientas digitales de seguimiento.</p>
+                <button class="service-action" onclick="openModal('Seguimiento de la operación', 'Monitoreo estatus a estatus del envío y despacho internacional.')">Consultar servicio <i class="ph ph-arrow-right"></i></button>
+            </div>
+            <!-- 8 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="ph ph-folder-open"></i></div>
+                <h3>Gestión y monitoreo de pedidos</h3>
+                <p>Facilita la organización de pedidos, comunicaciones y seguimiento de las operaciones dentro de un mismo entorno digital.</p>
+                <button class="service-action" onclick="openModal('Gestión y monitoreo de pedidos', 'Control centralizado de toda la documentación y transacciones activas de la empresa.')">Consultar servicio <i class="ph ph-arrow-right"></i></button>
+            </div>
+            <!-- 9 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="ph ph-star"></i></div>
+                <h3>Evaluación y cierre de la operación</h3>
+                <p>Una vez completada la entrega, las partes pueden evaluar la transacción y dejar comentarios que contribuyan a generar confianza para futuras negociaciones.</p>
+                <button class="service-action" onclick="openModal('Evaluación y cierre de la operación', 'Sistema de calificación mutua para fortalecer la reputación y confianza comercial B2B.')">Consultar servicio <i class="ph ph-arrow-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ¿CÓMO FUNCIONA? -->
+    <section id="como-funciona" class="container reveal">
+        <h2 class="section-title">¿Cómo funciona?</h2>
+        <p class="section-subtitle">El ciclo estructurado de una operación internacional a través de nuestra plataforma.</p>
+
+        <div class="process-grid">
+            <div class="process-card">
+                <span class="process-number">01</span>
+                <h4>Registro</h4>
+                <p>La MIPYME o productor crea su cuenta profesional.</p>
+            </div>
+            <div class="process-card">
+                <span class="process-number">02</span>
+                <h4>Verificación</h4>
+                <p>Se revisa la información presentada por el proveedor.</p>
+            </div>
+            <div class="process-card">
+                <span class="process-number">03</span>
+                <h4>Catálogo</h4>
+                <p>El proveedor publica sus productos exportables.</p>
+            </div>
+            <div class="process-card">
+                <span class="process-number">04</span>
+                <h4>Búsqueda</h4>
+                <p>El comprador internacional encuentra productos y proveedores.</p>
+            </div>
+            <div class="process-card">
+                <span class="process-number">05</span>
+                <h4>Cotización</h4>
+                <p>El comprador solicita información y presupuesto estimado.</p>
+            </div>
+            <div class="process-card">
+                <span class="process-number">06</span>
+                <h4>Negociación</h4>
+                <p>Las partes establecen las condiciones comerciales oficiales.</p>
+            </div>
+            <div class="process-card">
+                <span class="process-number">07</span>
+                <h4>Apoyo operativo</h4>
+                <p>ExportaLink orienta y conecta con servicios especializados.</p>
+            </div>
+            <div class="process-card">
+                <span class="process-number">08</span>
+                <h4>Seguimiento</h4>
+                <p>Se consulta el estado del pedido y del transporte físico.</p>
+            </div>
+            <div class="process-card">
+                <span class="process-number">09</span>
+                <h4>Entrega y cierre</h4>
+                <p>Se completa la operación y se evalúa la transacción.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- BENEFICIOS -->
+    <section id="beneficios" class="container reveal">
+        <h2 class="section-title">Beneficios clave</h2>
+        <p class="section-subtitle">Diseñado a la medida tanto para productores nacionales como para socios comerciales extranjeros.</p>
+
+        <div class="benefits-grid">
+            <!-- Vendedores -->
+            <div class="benefit-column">
+                <h3><i class="ph ph-storefront"></i> Para Vendedores Ecuatorianos</h3>
+                <ul class="benefit-list">
+                    <li><i class="ph ph-check-circle"></i> Mayor exposición ante compradores internacionales.</li>
+                    <li><i class="ph ph-check-circle"></i> Catálogo digital especializado.</li>
+                    <li><i class="ph ph-check-circle"></i> Solicitudes estructuradas de cotización.</li>
+                    <li><i class="ph ph-check-circle"></i> Organización de pedidos y comunicaciones.</li>
+                    <li><i class="ph ph-check-circle"></i> Información y listas de verificación orientativas.</li>
+                    <li><i class="ph ph-check-circle"></i> Conexión con proveedores de comercio exterior y logística.</li>
+                    <li><i class="ph ph-check-circle"></i> Monitoreo electrónico de operaciones.</li>
+                    <li><i class="ph ph-check-circle"></i> Canales de contacto 24/7.</li>
+                </ul>
+            </div>
+            <!-- Compradores -->
+            <div class="benefit-column">
+                <h3><i class="ph ph-globe-hemisphere-east"></i> Para Compradores Internacionales</h3>
+                <ul class="benefit-list">
+                    <li><i class="ph ph-check-circle"></i> Acceso directo a productos ecuatorianos de calidad.</li>
+                    <li><i class="ph ph-check-circle"></i> Catálogo estructurado y de fácil navegación.</li>
+                    <li><i class="ph ph-check-circle"></i> Información organizada de proveedores y productos.</li>
+                    <li><i class="ph ph-check-circle"></i> Búsqueda avanzada de diferentes perfiles proveedores.</li>
+                    <li><i class="ph ph-check-circle"></i> Solicitud digital de cotizaciones ágiles.</li>
+                    <li><i class="ph ph-check-circle"></i> Comunicación directa sin intermediarios innecesarios.</li>
+                    <li><i class="ph ph-check-circle"></i> Seguimiento constante de pedidos.</li>
+                    <li><i class="ph ph-check-circle"></i> Acceso a proveedores verificados y contacto 24/7.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIFERENCIADOR ESPECIAL -->
+    <section class="diff-section">
+        <div class="container reveal">
+            <h2 class="section-title">¿Qué nos hace diferentes?</h2>
+            <p class="section-subtitle">“No solo conectamos productos. Conectamos las etapas de una operación internacional.”</p>
+
+            <div class="diff-cards">
+                <div class="diff-item">
+                    <h4>Enfoque B2B Especializado</h4>
+                    <p>Mientras las tiendas electrónicas convencionales priorizan transacciones minoristas directas, ExportaLink centraliza requerimientos complejos de comercio exterior entre empresas.</p>
+                </div>
+                <div class="diff-item">
+                    <h4>Coordinación Integral</h4>
+                    <p>Integramos en un mismo entorno digital la información comercial, cotizaciones, negociaciones, asesoría documental y el enlace con actores logísticos y aduaneros.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACTO Y DISPONIBILIDAD 24/7 -->
+    <section id="contacto" class="contact-section">
+        <div class="container contact-grid reveal">
+            <div>
+                <div class="status-badge light" style="margin-bottom: 15px;">
+                    <span class="dot"></span> Disponible 24/7
+                </div>
+                <h2>Conectemos tu negocio con nuevos mercados</h2>
+                <p style="color: var(--gris); margin-bottom: 30px; font-size: 1.05rem;">¿Tienes un producto ecuatoriano o buscas proveedores para tu próxima operación internacional? Ponte en contacto con ExportaLink en cualquier momento.</p>
+                
+                <a href="https://wa.me/593981313672" target="_blank" class="btn btn-whatsapp dark-mode" style="margin-bottom: 20px;">
+                    <i class="ph ph-whatsapp-logo" style="font-size: 1.3rem;"></i> Contáctanos por WhatsApp
+                </a>
+            </div>
+
+            <div style="background: var(--marfil); padding: 40px; border-radius: var(--border-radius); border: 1px solid rgba(0,0,0,0.05);">
+                <form onsubmit="event.preventDefault(); alert('Formulario preparado para integración futura.');">
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" class="form-control" placeholder="Tu nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Empresa</label>
+                        <input type="text" class="form-control" placeholder="Nombre de tu empresa">
+                    </div>
+                    <div class="form-group">
+                        <label>Correo electrónico</label>
+                        <input type="email" class="form-control" placeholder="correo@empresa.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de consulta</label>
+                        <select class="form-control">
+                            <option>Soy productor / exportador ecuatoriano</option>
+                            <option>Soy comprador internacional</option>
+                            <option>Consulta sobre servicios y coordinación</option>
+                            <option>Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Mensaje</label>
+                        <textarea class="form-control" rows="3" placeholder="¿Cómo podemos ayudarte?" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Enviar consulta</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="#" class="footer-logo">
+                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 26px; height: 26px;">
+                            <circle cx="22" cy="50" r="7" fill="#B7D94C"/>
+                            <circle cx="78" cy="25" r="7" fill="#0F766E"/>
+                            <circle cx="78" cy="75" r="7" fill="#0F766E"/>
+                            <path d="M22 50 L22 25 L55 25" stroke="#F5F3EE" stroke-width="8" stroke-linecap="round"/>
+                            <path d="M22 50 L48 50" stroke="#F5F3EE" stroke-width="8" stroke-linecap="round"/>
+                            <path d="M22 50 L22 75 L78 75" stroke="#F5F3EE" stroke-width="8" stroke-linecap="round"/>
+                            <path d="M55 25 L78 25" stroke="#B7D94C" stroke-width="3" stroke-dasharray="3 3"/>
+                            <path d="M48 50 L72 50" stroke="#B7D94C" stroke-width="3" stroke-dasharray="3 3"/>
+                        </svg>
+                        ExportaLink
+                    </a>
+                    <p style="font-size: 0.9rem; margin-bottom: 15px;">“Conectamos productos ecuatorianos con mercados internacionales.”</p>
+                    <div class="status-badge" style="padding: 4px 10px; font-size: 0.78rem;">
+                        <span class="dot"></span> Disponible 24/7
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Navegación</h4>
+                    <ul>
+                        <li><a href="#about">¿Qué es?</a></li>
+                        <li><a href="#servicios">Servicios</a></li>
+                        <li><a href="#como-funciona">Cómo funciona</a></li>
+                        <li><a href="#beneficios">Beneficios</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Contacto</h4>
+                    <ul>
+                        <li><a href="#contacto">Formulario web</a></li>
+                        <li>
+                            <a href="https://wa.me/593981313672" target="_blank" style="display: inline-flex; align-items: center; gap: 5px; color: var(--lima);">
+                                <i class="ph ph-whatsapp-logo"></i> WhatsApp 24/7
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 ExportaLink. Todos los derechos reservados. Plataforma especializada en Comercio Exterior B2B.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL DE SERVICIOS -->
+    <div class="modal-overlay" id="serviceModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()"><i class="ph ph-x"></i></button>
+            <h3 id="modalTitle" style="color: var(--petroleo); margin-bottom: 15px; font-size: 1.3rem;"></h3>
+            <p id="modalDesc" style="color: var(--gris); margin-bottom: 25px; font-size: 0.95rem; line-height: 1.6;"></p>
+            <a href="https://wa.me/593981313672" target="_blank" class="btn btn-primary" style="width: 100%;">
+                <i class="ph ph-whatsapp-logo" style="font-size: 1.2rem;"></i> Consultar por WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Menú responsive móvil
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('ph-list');
+            menuToggle.classList.toggle('ph-x');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuToggle.classList.remove('ph-x');
+                menuToggle.classList.add('ph-list');
+            });
+        });
+
+        // Funciones del Modal para los servicios
+        function openModal(title, desc) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalDesc').innerText = desc;
+            document.getElementById('serviceModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('serviceModal').classList.remove('active');
+        }
+
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('serviceModal');
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Animaciones dinámicas al hacer scroll (Intersection Observer)
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: "0px 0px -40px 0px"
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+    </script>
+</body>
+</html>
